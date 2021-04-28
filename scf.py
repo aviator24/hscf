@@ -134,7 +134,7 @@ class Scf(object):
             rho[~mask] *= rho[self.idA,0]/self.Trat/rho[self.idA+1,0]
             prs[~mask] = self.Trat*self.alpha2*rho[~mask]
         return rho, prs, omg2, mask
-    def run(self, tol=2e-8):
+    def run(self, tol=2e-8, verbose=True):
         """
         Run SCF iteration
 
@@ -148,5 +148,6 @@ class Scf(object):
             pomg2 = omg2
             Phi = self.solve_poisson(rho)
             rho, prs, omg2, mask = self.solve_hydro(Phi)
-            print("omg = {:6.8f}".format(np.sqrt(omg2)))
+            if verbose:
+                print("omg = {:6.8f}".format(np.sqrt(omg2)))
         return {"dens":rho, "prs":prs, "Phi":Phi, "omg2":omg2, "mask":mask}
